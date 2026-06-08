@@ -1949,7 +1949,7 @@ print(f"...총 {len(translated_text)}자 음절의 음성 파형 보충 및 음�
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm px-4"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 px-4"
             onClick={() => setVideoModal(null)}
           >
             <motion.div
@@ -1957,16 +1957,16 @@ print(f"...총 {len(translated_text)}자 음절의 음성 파형 보충 및 음�
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
               transition={{ type: 'spring', duration: 0.4 }}
-              className="bg-white rounded-2xl shadow-2xl p-5 max-w-lg w-full text-center space-y-4"
+              className="bg-[#f5f0eb] rounded-2xl shadow-2xl p-5 max-w-lg w-full text-center space-y-4"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-extrabold text-stone-900">"{videoModal.title}" 수어 영상</h3>
-                <button onClick={() => setVideoModal(null)} className="p-1 hover:bg-stone-100 rounded-lg transition-colors">
+                <button onClick={() => setVideoModal(null)} className="p-1 hover:bg-stone-200 rounded-lg transition-colors">
                   <X className="w-5 h-5 text-stone-500" />
                 </button>
               </div>
-              <div className="rounded-xl overflow-hidden bg-transparent aspect-video relative">
+              <div className="rounded-xl overflow-hidden bg-[#e8e0d8] aspect-video relative">
                 {videoModal.urls.length > 1 && (
                   <span className="absolute top-2 left-2 bg-black/40 text-white text-[11px] font-bold px-2.5 py-1 rounded-md z-10">
                     {videoModal.title.split(' ')[currentVideoIndex] || `영상 ${currentVideoIndex + 1}`} ({currentVideoIndex + 1}/{videoModal.urls.length})

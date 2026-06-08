@@ -1065,6 +1065,7 @@ print(f"...총 {len(translated_text)}자 음절의 음성 파형 보충 및 음�
               <span>{config.heroBadge}</span>
             </div>
 
+
             <h1 className="text-4xl sm:text-5xl lg:text-5xl font-black tracking-tight text-stone-900 leading-[1.25]">
               {config.heroTitleLine1} <br />
               <span className="text-[#E76F51] bg-gradient-to-r from-orange-600 via-orange-500 to-amber-500 bg-clip-text text-transparent">
@@ -1110,50 +1111,47 @@ print(f"...총 {len(translated_text)}자 음절의 음성 파형 보충 및 음�
             </div>
           </div>
 
-          {/* Large Hero Card Right */}
+          {/* Brand Vision Card Right */}
           <div className="lg:col-span-5 relative w-full flex justify-center">
-            <div className="absolute inset-0 bg-gradient-to-tr from-orange-200/30 to-amber-100/30 rounded-3xl blur-2xl -z-10 transform scale-95" />
+            <div className="absolute inset-0 bg-gradient-to-tr from-blue-200/20 to-sky-100/20 rounded-3xl blur-2xl -z-10 transform scale-95" />
 
-            <div className="bg-white border border-stone-200/60 rounded-3xl p-6 shadow-xl relative overflow-hidden flex flex-col items-center w-full max-w-sm">
-              {/* Badge */}
-              <span className="absolute top-4 right-4 bg-orange-100/80 text-[#E76F51] text-[10px] font-bold px-2 py-0.5 rounded-md">
-                대세 애플리케이션
-              </span>
-
-              {/* Service Flower logo with fallback */}
-              <div className="w-44 h-44 my-4 flex items-center justify-center">
+            <div className="bg-white border border-stone-200/60 rounded-3xl p-8 shadow-xl relative overflow-hidden flex flex-col items-center w-full max-w-sm text-center">
+              {/* ITDA Flower Logo */}
+              <div className="w-36 h-36 my-2 flex items-center justify-center">
                 <ImgWithFallback
                   src={config.logoImg}
                   alt="ITDA 원형 꽃 심볼 대표 로고"
-                  className="w-full h-full object-contain filter drop-shadow-md transform hover:rotate-12 transition-transform duration-700"
-                  fallbackIcon={<Sparkles className="w-16 h-16 text-orange-400" />}
+                  className="w-full h-full object-contain filter drop-shadow-md"
+                  fallbackIcon={<Sparkles className="w-16 h-16 text-blue-400" />}
                 />
               </div>
 
-              {/* Core Banner representation with fallback */}
-              <div className="w-full bg-slate-50/80 border border-slate-100 p-4 rounded-2xl flex flex-col items-center text-center">
+              {/* Vision Statement */}
+              <p className="text-sm text-stone-700 leading-relaxed font-medium mt-2 mb-5">
+                청각장애인 당사자, 가족, 친구, 사회, 세계 — 다섯<br />
+                마음이 하나의 원을 이루는 <span className="font-extrabold text-stone-900">ITDA</span>의 비전입니다.
+              </p>
+
+              {/* 5 Value Pills */}
+              <div className="flex flex-wrap justify-center gap-2 mb-6">
+                {['당사자', '가족', '친구', '사회', '세계'].map((label) => (
+                  <span key={label} className="border border-sky-300 text-sky-700 text-xs font-semibold px-4 py-1.5 rounded-full">
+                    {label}
+                  </span>
+                ))}
+              </div>
+
+              {/* ITDA Banner Logo */}
+              <div className="w-full flex flex-col items-center">
                 <ImgWithFallback
                   src={config.logoBanner}
-                  alt="ITDA 소통의 교각 영문 배너"
-                  className="h-7 object-contain mb-2"
-                  fallbackIcon={<p className="text-semibold text-[#E76F51] text-lg font-bold">{config.logoTitle}</p>}
+                  alt="ITDA 로고 배너"
+                  className="h-16 object-contain mb-2"
+                  fallbackIcon={<p className="text-2xl font-extrabold text-stone-800">ITDA</p>}
                 />
-                <p className="text-[11px] text-stone-500 leading-relaxed font-semibold">
-                  수어와 세상을 가장 조화롭게 가로지르는 현대적인 영혼의 무지개 다리
+                <p className="text-sm text-stone-500 font-medium">
+                  너와 나를 하나로 이어 모두가 즐거운 세상
                 </p>
-              </div>
-
-              {/* Miniature horizontal interactive pills dynamically pulled from phrases */}
-              <div className="grid grid-cols-2 gap-2 w-full mt-4">
-                {config.signPhrases.slice(0, 2).map((item: any, id: number) => (
-                  <div key={item.id} className="bg-orange-50/40 p-3 rounded-xl flex items-center gap-2.5 border border-orange-100/30">
-                    <div className="w-6 h-6 rounded-full bg-orange-100/70 flex items-center justify-center text-xs">{item.icon}</div>
-                    <div className="truncate">
-                      <p className="text-[11px] font-bold text-stone-800 truncate">{item.korean}</p>
-                      <p className="text-[10px] text-stone-400 truncate">{item.english}</p>
-                    </div>
-                  </div>
-                ))}
               </div>
             </div>
           </div>

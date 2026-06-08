@@ -1966,9 +1966,9 @@ print(f"...총 {len(translated_text)}자 음절의 음성 파형 보충 및 음�
                   <X className="w-5 h-5 text-stone-500" />
                 </button>
               </div>
-              <div className="rounded-xl overflow-hidden bg-stone-100 aspect-video relative">
+              <div className="rounded-xl overflow-hidden bg-transparent aspect-video relative">
                 {videoModal.urls.length > 1 && (
-                  <span className="absolute top-2 left-2 bg-black/60 text-white text-[11px] font-bold px-2.5 py-1 rounded-md z-10">
+                  <span className="absolute top-2 left-2 bg-black/40 text-white text-[11px] font-bold px-2.5 py-1 rounded-md z-10">
                     {videoModal.title.split(' ')[currentVideoIndex] || `영상 ${currentVideoIndex + 1}`} ({currentVideoIndex + 1}/{videoModal.urls.length})
                   </span>
                 )}
@@ -1976,8 +1976,8 @@ print(f"...총 {len(translated_text)}자 음절의 음성 파형 보충 및 음�
                   key={currentVideoIndex}
                   src={videoModal.urls[currentVideoIndex]}
                   autoPlay
+                  muted
                   playsInline
-                  controls
                   className="w-full h-full object-contain"
                   onLoadedMetadata={(e) => {
                     if (currentVideoIndex > 0) {

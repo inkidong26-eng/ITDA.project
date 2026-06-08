@@ -1,0 +1,6 @@
+{
+  "name": "ITDA - 실시간 수어-음성 소통 플랫폼",
+  "description": "소리가 없어도 연결되는 세상, 수어와 음성을 실시간으로 연결하는 ITDA의 서비스 소개 랜딩 페이지입니다.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

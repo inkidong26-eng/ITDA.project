@@ -89,6 +89,456 @@ function getIconComponent(name: string) {
   }
 }
 
+// --- i18n Multi-language Support ---
+type Lang = 'ko' | 'en' | 'ja' | 'zh' | 'vi' | 'id' | 'hi';
+
+const LANG_LABELS: Record<Lang, string> = {
+  ko: '한국어',
+  en: 'English',
+  ja: '日本語',
+  zh: '中文',
+  vi: 'Tiếng Việt',
+  id: 'Bahasa',
+  hi: 'हिन्दी',
+};
+
+const i18n: Record<Lang, Record<string, string>> = {
+  ko: {
+    navIntro: '서비스 소개',
+    navFeatures: '핵심 기술',
+    navSteps: '시작하기',
+    heroBadge: '장애 너머의 따뜻한 통찰과 기술의 결합',
+    heroLine1: '소리가 없어도,',
+    heroLine2: '우리는 이어집니다',
+    heroDesc: 'ITDA(잇다)는 수어와 음성을 실시간 인공지능으로 튼튼하게 결합하여 청각장애인과 비장애인이 일상에서 지연 없이 부드럽고 자연스럽게 대화하도록 이끄는 스마트 소통 혁신 서비스입니다.',
+    btnStart: '무료로 체험 시작하기',
+    btnLearn: 'ITDA 가치 알아보기',
+    stat1Num: '36만+',
+    stat1Label: '국내 청각장애 보증 파트너',
+    stat2Num: '4.66억',
+    stat2Label: '글로벌 잠재 수어 인구',
+    stat3Num: '지연 없음',
+    stat3Label: '실시간 온디바이스 응답',
+    storyBadge: 'Brand Core Vision',
+    storyTitle: "한국의 '정(情)'을 담아, 언어의 장벽을 세계로 잇다",
+    storyDesc1: 'ITDA는 단순한 디지털 안내 번역 애플리케이션에 멈추지 않습니다. 청각장애인 당사자, 깊은 애정을 지닌 가족과 친구들, 환자의 아픔을 듣는 의료진, 그리고 일상의 이웃들까지—소리가 필요한 곳이라면 수어와 완벽한 음성을 투명하게 이어줍니다.',
+    storyDesc2: '한국인의 깊고 정겨운 따뜻한 정(情)에서 시작된 아이디어는 전 세계 대다수의 언어적 단절을 이겨내는 위대한 기술적 비전으로 자라나며, 소외 받는 구성원이 단 한 명도 없는 평등하고 따뜻한 사회를 구현해 나갑니다.',
+    visionText: '청각장애인 당사자, 가족, 친구, 사회, 세계 — 다섯\n마음이 하나의 원을 이루는 ITDA의 비전입니다.',
+    visionSlogan: '너와 나를 하나로 이어 모두가 즐거운 세상',
+    visionPills: '당사자,가족,친구,사회,세계',
+    touchCardTitle: '마음을 전하는 따뜻한 수어 및 아이콘 표현들',
+    touchCardSub: '스탬프 카드를 누르면 아래 인공지능 핸드트래킹 모션 체임버 시뮬레이터로 즉각 연동됩니다!',
+    featuresLabel: 'ITDA Key Innovations',
+    featuresTitle: '서비스가 전달하는 핵심 소통가치',
+    featuresSub: '전혀 새로운 차원의 전인류적 장벽 철폐 메커니즘을 경험해보세요.',
+    stepsLabel: 'Simple 3-Steps',
+    stepsTitle: '장벽을 정복하는 간편한 3단계 안내',
+    stepsSub: '교육 없이 직관적으로 시작하는 가장 정겨운 발걸음',
+    step1Title: '앱 접속 / 웹 실행',
+    step1Desc: '설치 없이 브라우저 주소 접속이나 ITDA 모바일 애플리케이션을 상쾌하게 다운로드 받아 켜주세요.',
+    step2Title: '실시간 대화 모드 결정',
+    step2Desc: "화면 지침의 '수어 발신'과 '음성 번역 수신' 중 나에게 맞는 가장 친절하고 직관적인 모드를 탭해 활성화합니다.",
+    step3Title: '카메라 지향 및 밀접 대화',
+    step3Desc: '단순 손바닥 지문과 턱선을 가벼운 렌즈 앵글에 맞춰 편하게 손짓과 말소리로 풍부하고 따뜻한 소통을 이뤄갑니다.',
+    ctaTitle: '지금, 소통의 벽을 함께 허물어요',
+    ctaSub: '벽을 허물어 따뜻하게 상호 포용하는 세상을 열어 가기 위해, 기술은 오늘도 애쓰며 한 호흡으로 전진합니다.',
+    ctaBtn: '기관 비즈니스 연동 문의하기',
+    comingSoonTitle: '준비 중입니다',
+    comingSoonMsg: '지금 준비중입니다. 빠른 시간내 준비하도록 하겠습니다. 감사합니다.',
+    comingSoonClose: '닫기',
+    feat1Title: '실시간 수어 번역 센서',
+    feat1Desc: 'AI 모델이 카메라 영상을 온디바이스로 신속 분석해, 수어 제스처의 미세한 흐름을 실시간으로 정확히 추적 번역합니다.',
+    feat2Title: '음성 ➜ 캐릭터 수어 변환',
+    feat2Desc: '비장애인이 내뱉은 음성은 실시간 텍스트로 보조될 뿐 아니라 아바타 모델링을 통해 섬세한 손짓 수어로 즉각 형상화됩니다.',
+    feat3Title: '다국어 글로벌 수어 라이브러리',
+    feat3Desc: '한국어 표준 수어 연구 결과는 물론이고, 국제 범용 수어(IS)와 전 세계 메이저 국가별 수어 모듈을 통합 제공합니다.',
+    feat4Title: '학습 및 파트너 커뮤니티',
+    feat4Desc: '수어 사용자, 교육생, 재능 나누미 통역사, 그리고 응원하는 가족들이 소소한 에피소드를 안전하게 쌓아가는 나눔의 공간입니다.',
+    feat5Title: '크로스 멀티디바이스 웹앱',
+    feat5Desc: 'iOS와 안드로이드 네이티브 앱은 물론, 태블릿, 키오스크 매장 웹 브라우저까지 완벽히 최적화된 반응형 프레임워크입니다.',
+    feat6Title: '종단간 프라이버시 원칙',
+    feat6Desc: '민감한 오디오 대화나 일개 촬영 화면 정보는 서버에 무단 기록되지 않으며 대화방 폐쇄 순간 종단간 암호화되어 소멸합니다.',
+    feat1Badge: '독보적 응답성',
+    feat2Badge: '시각 가독 보장',
+    feat3Badge: '세계 최초 통합',
+    feat4Badge: '커뮤니티 파워',
+    feat5Badge: '높은 연결 호환성',
+    feat6Badge: '철저한 보안성',
+  },
+  en: {
+    navIntro: 'About',
+    navFeatures: 'Features',
+    navSteps: 'Get Started',
+    heroBadge: 'Warm insight and technology beyond disability',
+    heroLine1: 'Even without sound,',
+    heroLine2: 'we stay connected',
+    heroDesc: 'ITDA seamlessly bridges sign language and voice through real-time AI, enabling natural and smooth conversations between deaf and hearing people without any delay.',
+    btnStart: 'Start Free Trial',
+    btnLearn: 'Learn About ITDA',
+    stat1Num: '360K+',
+    stat1Label: 'Domestic Deaf Partners',
+    stat2Num: '466M',
+    stat2Label: 'Global Sign Language Users',
+    stat3Num: 'Zero Delay',
+    stat3Label: 'Real-time On-device Response',
+    storyBadge: 'Brand Core Vision',
+    storyTitle: "Bridging the world's language barriers with Korean warmth",
+    storyDesc1: 'ITDA is more than a digital translation app. From deaf individuals, loving families and friends, medical staff, to everyday neighbors — wherever sound is needed, we transparently connect sign language and voice.',
+    storyDesc2: 'An idea born from the deep Korean spirit of Jeong(情) grows into a great technological vision that overcomes linguistic disconnection worldwide, building an equal and warm society where no one is left behind.',
+    visionText: 'Individuals, Family, Friends, Society, World — five\nhearts forming one circle is the vision of ITDA.',
+    visionSlogan: 'A joyful world where you and I are connected as one',
+    visionPills: 'Individual,Family,Friend,Society,World',
+    touchCardTitle: 'Warm sign language expressions that convey your heart',
+    touchCardSub: 'Tap a stamp card to instantly connect to the AI hand-tracking motion simulator below!',
+    featuresLabel: 'ITDA Key Innovations',
+    featuresTitle: 'Core communication values delivered by our service',
+    featuresSub: 'Experience a whole new dimension of barrier-breaking mechanisms for all humanity.',
+    stepsLabel: 'Simple 3-Steps',
+    stepsTitle: 'Three easy steps to conquer barriers',
+    stepsSub: 'The most intuitive first steps, no training needed',
+    step1Title: 'Access App / Open Web',
+    step1Desc: 'Simply visit the browser URL or download the ITDA mobile app to get started.',
+    step2Title: 'Choose Conversation Mode',
+    step2Desc: "Tap to activate the most intuitive mode for you: 'Sign Language Send' or 'Voice Translation Receive'.",
+    step3Title: 'Point Camera & Chat',
+    step3Desc: 'Align your palms and chin with the camera angle for rich and warm communication through gestures and voice.',
+    ctaTitle: "Let's break down communication barriers together",
+    ctaSub: 'Technology strives every day to open a world of mutual inclusion by breaking down walls.',
+    ctaBtn: 'Contact for Business Integration',
+    comingSoonTitle: 'Coming Soon',
+    comingSoonMsg: 'We are currently preparing this feature. It will be ready soon. Thank you for your patience.',
+    comingSoonClose: 'Close',
+    feat1Title: 'Real-time Sign Translation Sensor',
+    feat1Desc: 'AI model rapidly analyzes camera video on-device, accurately tracking and translating subtle sign language gesture flows in real-time.',
+    feat2Title: 'Voice ➜ Character Sign Conversion',
+    feat2Desc: 'Spoken voice is not only supplemented with real-time text but also instantly visualized as delicate sign language through avatar modeling.',
+    feat3Title: 'Multilingual Global Sign Library',
+    feat3Desc: 'Provides Korean standard sign language research results as well as International Sign (IS) and major country-specific sign language modules worldwide.',
+    feat4Title: 'Learning & Partner Community',
+    feat4Desc: 'A sharing space where sign language users, trainees, volunteer interpreters, and supporting families safely build small episodes together.',
+    feat5Title: 'Cross Multi-device Web App',
+    feat5Desc: 'Perfectly optimized responsive framework for iOS and Android native apps, tablets, kiosk store web browsers.',
+    feat6Title: 'End-to-End Privacy Principle',
+    feat6Desc: 'Sensitive audio conversations and camera footage are never recorded on servers and are end-to-end encrypted upon chat room closure.',
+    feat1Badge: 'Unmatched Speed',
+    feat2Badge: 'Visual Clarity',
+    feat3Badge: 'World First',
+    feat4Badge: 'Community Power',
+    feat5Badge: 'High Compatibility',
+    feat6Badge: 'Strict Security',
+  },
+  ja: {
+    navIntro: 'サービス紹介',
+    navFeatures: 'コア技術',
+    navSteps: '始める',
+    heroBadge: '障害を超えた温かい洞察と技術の融合',
+    heroLine1: '音がなくても、',
+    heroLine2: 'つながっています',
+    heroDesc: 'ITDA（イッダ）は手話と音声をリアルタイムAIで結合し、聴覚障害者と健聴者が日常で遅延なくスムーズに会話できるスマートコミュニケーション革新サービスです。',
+    btnStart: '無料体験を始める',
+    btnLearn: 'ITDAの価値を知る',
+    stat1Num: '36万+',
+    stat1Label: '国内聴覚障害パートナー',
+    stat2Num: '4.66億',
+    stat2Label: 'グローバル手話人口',
+    stat3Num: '遅延なし',
+    stat3Label: 'リアルタイム応答',
+    storyBadge: 'Brand Core Vision',
+    storyTitle: '韓国の「情」を込めて、言語の壁を世界へつなぐ',
+    storyDesc1: 'ITDAは単なるデジタル翻訳アプリにとどまりません。聴覚障害者本人、愛情深い家族や友人、医療従事者、そして日常の隣人まで — 音が必要な場所で手話と音声を透明につなぎます。',
+    storyDesc2: '韓国人の温かい情（ジョン）から始まったアイデアは、世界中の言語的断絶を克服する偉大な技術ビジョンへと成長し、誰一人取り残されない平等で温かい社会を実現していきます。',
+    visionText: '当事者、家族、友人、社会、世界 — 五つの\n心が一つの円を成すITDAのビジョンです。',
+    visionSlogan: 'あなたと私を一つにつないで皆が楽しい世界',
+    visionPills: '当事者,家族,友人,社会,世界',
+    touchCardTitle: '心を伝える温かい手話とアイコン表現',
+    touchCardSub: 'スタンプカードをタップすると、下のAIハンドトラッキングシミュレーターに即座に連動します！',
+    featuresLabel: 'ITDA Key Innovations',
+    featuresTitle: 'サービスが届けるコアコミュニケーション価値',
+    featuresSub: '全く新しい次元の障壁撤廃メカニズムを体験してください。',
+    stepsLabel: 'Simple 3-Steps',
+    stepsTitle: '障壁を克服する簡単3ステップガイド',
+    stepsSub: '教育不要、直感的に始める最も親しみやすい一歩',
+    step1Title: 'アプリ接続 / Web実行',
+    step1Desc: 'インストール不要でブラウザからアクセス、またはITDAモバイルアプリをダウンロードして起動してください。',
+    step2Title: 'リアルタイム会話モード選択',
+    step2Desc: '「手話送信」と「音声翻訳受信」から最も直感的なモードをタップして有効化します。',
+    step3Title: 'カメラを向けて会話',
+    step3Desc: '手のひらと顎をカメラアングルに合わせ、手話と声で豊かなコミュニケーションを実現します。',
+    ctaTitle: '今、コミュニケーションの壁を一緒に壊しましょう',
+    ctaSub: '壁を壊し、温かく互いを包容する世界を開くために、技術は今日も一歩ずつ前進します。',
+    ctaBtn: '法人ビジネス連携のお問い合わせ',
+    comingSoonTitle: '準備中です',
+    comingSoonMsg: 'ただいま準備中です。近日中にご利用いただけるよう準備いたします。ありがとうございます。',
+    comingSoonClose: '閉じる',
+    feat1Title: 'リアルタイム手話翻訳センサー',
+    feat1Desc: 'AIモデルがカメラ映像をオンデバイスで迅速に分析し、手話ジェスチャーの微細な流れをリアルタイムで正確に追跡翻訳します。',
+    feat2Title: '音声 ➜ キャラクター手話変換',
+    feat2Desc: '健聴者の音声はリアルタイムテキストで補助されるだけでなく、アバターモデリングを通じて繊細な手話として即座に形象化されます。',
+    feat3Title: '多言語グローバル手話ライブラリ',
+    feat3Desc: '韓国語標準手話の研究成果はもちろん、国際手話(IS)と世界各国の手話モジュールを統合提供します。',
+    feat4Title: '学習＆パートナーコミュニティ',
+    feat4Desc: '手話ユーザー、研修生、ボランティア通訳者、応援する家族が安全にエピソードを積み重ねる共有空間です。',
+    feat5Title: 'クロスマルチデバイスWebアプリ',
+    feat5Desc: 'iOSとAndroidネイティブアプリはもちろん、タブレット、キオスク店舗Webブラウザまで完全最適化されたレスポンシブフレームワークです。',
+    feat6Title: 'エンドツーエンドプライバシー原則',
+    feat6Desc: '機密性の高い音声会話やカメラ映像情報はサーバーに無断記録されず、チャットルーム閉鎖時にエンドツーエンド暗号化されて消滅します。',
+    feat1Badge: '独自の応答性',
+    feat2Badge: '視覚的可読性',
+    feat3Badge: '世界初統合',
+    feat4Badge: 'コミュニティ力',
+    feat5Badge: '高い互換性',
+    feat6Badge: '厳格なセキュリティ',
+  },
+  zh: {
+    navIntro: '服务介绍',
+    navFeatures: '核心技术',
+    navSteps: '开始使用',
+    heroBadge: '超越障碍的温暖洞察与技术结合',
+    heroLine1: '即使没有声音，',
+    heroLine2: '我们依然相连',
+    heroDesc: 'ITDA通过实时人工智能将手语和语音紧密结合，使听障人士和健听人士在日常生活中无延迟地进行自然流畅的对话。',
+    btnStart: '免费开始体验',
+    btnLearn: '了解ITDA价值',
+    stat1Num: '36万+',
+    stat1Label: '国内听障合作伙伴',
+    stat2Num: '4.66亿',
+    stat2Label: '全球手语人口',
+    stat3Num: '零延迟',
+    stat3Label: '实时设备端响应',
+    storyBadge: 'Brand Core Vision',
+    storyTitle: '承载韩国"情"，将语言的壁垒连接到世界',
+    storyDesc1: 'ITDA不仅仅是一个数字翻译应用。从听障当事人、充满爱的家人和朋友、医疗人员到日常邻居——只要有声音需要的地方，我们都透明地连接手语和语音。',
+    storyDesc2: '源自韩国人深厚温暖的"情"的创意，成长为克服全球语言断裂的伟大技术愿景，实现没有任何成员被排斥的平等温暖社会。',
+    visionText: '当事人、家人、朋友、社会、世界——五颗\n心组成一个圆是ITDA的愿景。',
+    visionSlogan: '将你和我连为一体，共创快乐世界',
+    visionPills: '当事人,家人,朋友,社会,世界',
+    touchCardTitle: '传递心意的温暖手语和图标表达',
+    touchCardSub: '点击印章卡片，立即连接到下方AI手部追踪运动模拟器！',
+    featuresLabel: 'ITDA Key Innovations',
+    featuresTitle: '服务传递的核心沟通价值',
+    featuresSub: '体验全新维度的全人类障碍消除机制。',
+    stepsLabel: 'Simple 3-Steps',
+    stepsTitle: '征服障碍的简单3步指南',
+    stepsSub: '无需培训，直觉式开始的最亲切步伐',
+    step1Title: '访问应用 / 打开网页',
+    step1Desc: '无需安装，直接通过浏览器访问或下载ITDA移动应用即可开始。',
+    step2Title: '选择实时对话模式',
+    step2Desc: '点击选择最适合您的直觉模式："手语发送"或"语音翻译接收"。',
+    step3Title: '对准摄像头开始对话',
+    step3Desc: '将手掌和下巴对准镜头角度，通过手势和声音进行丰富温暖的沟通。',
+    ctaTitle: '现在，让我们一起打破沟通的壁垒',
+    ctaSub: '为了打破壁垒、开创温暖包容的世界，技术每天都在努力前进。',
+    ctaBtn: '机构业务对接咨询',
+    comingSoonTitle: '准备中',
+    comingSoonMsg: '目前正在准备中，我们会尽快完成准备。感谢您的耐心等待。',
+    comingSoonClose: '关闭',
+    feat1Title: '实时手语翻译传感器',
+    feat1Desc: 'AI模型在设备端快速分析摄像头画面，实时精确追踪翻译手语手势的细微流动。',
+    feat2Title: '语音 ➜ 角色手语转换',
+    feat2Desc: '健听者的语音不仅有实时文字辅助，还通过虚拟形象建模即时呈现为细腻的手语。',
+    feat3Title: '多语言全球手语库',
+    feat3Desc: '提供韩语标准手语研究成果以及国际通用手语(IS)和全球主要国家手语模块。',
+    feat4Title: '学习与伙伴社区',
+    feat4Desc: '手语使用者、学员、志愿翻译员和支持的家人安全积累小故事的共享空间。',
+    feat5Title: '跨多设备Web应用',
+    feat5Desc: '完美优化的响应式框架，支持iOS和Android原生应用、平板电脑、店铺自助终端Web浏览器。',
+    feat6Title: '端到端隐私原则',
+    feat6Desc: '敏感的音频对话和摄像画面信息不会被服务器擅自记录，聊天室关闭时通过端到端加密销毁。',
+    feat1Badge: '无与伦比的响应',
+    feat2Badge: '视觉可读性',
+    feat3Badge: '全球首创',
+    feat4Badge: '社区力量',
+    feat5Badge: '高兼容性',
+    feat6Badge: '严格安全',
+  },
+  vi: {
+    navIntro: 'Giới thiệu',
+    navFeatures: 'Công nghệ',
+    navSteps: 'Bắt đầu',
+    heroBadge: 'Sự kết hợp giữa công nghệ và sự thấu hiểu vượt qua rào cản',
+    heroLine1: 'Dù không có âm thanh,',
+    heroLine2: 'chúng ta vẫn kết nối',
+    heroDesc: 'ITDA kết hợp liền mạch ngôn ngữ ký hiệu và giọng nói thông qua AI thời gian thực, giúp người khiếm thính và người nghe giao tiếp tự nhiên, mượt mà mà không có bất kỳ sự chậm trễ nào.',
+    btnStart: 'Dùng thử miễn phí',
+    btnLearn: 'Tìm hiểu về ITDA',
+    stat1Num: '360K+',
+    stat1Label: 'Đối tác hỗ trợ khiếm thính',
+    stat2Num: '466 triệu',
+    stat2Label: 'Người dùng ngôn ngữ ký hiệu toàn cầu',
+    stat3Num: 'Không độ trễ',
+    stat3Label: 'Phản hồi thời gian thực trên thiết bị',
+    storyBadge: 'Brand Core Vision',
+    storyTitle: 'Mang hơi ấm tình người Hàn Quốc, kết nối rào cản ngôn ngữ ra thế giới',
+    storyDesc1: 'ITDA không chỉ là một ứng dụng dịch thuật số. Từ người khiếm thính, gia đình và bạn bè yêu thương, nhân viên y tế đến những người hàng xóm — bất cứ nơi nào cần âm thanh, chúng tôi kết nối minh bạch ngôn ngữ ký hiệu và giọng nói.',
+    storyDesc2: 'Ý tưởng sinh ra từ tinh thần Jeong (情) ấm áp của người Hàn Quốc phát triển thành tầm nhìn công nghệ vĩ đại vượt qua sự đứt gãy ngôn ngữ trên toàn thế giới, xây dựng một xã hội bình đẳng và ấm áp nơi không ai bị bỏ lại phía sau.',
+    visionText: 'Đương sự, Gia đình, Bạn bè, Xã hội, Thế giới — năm\ntrái tim tạo thành một vòng tròn là tầm nhìn của ITDA.',
+    visionSlogan: 'Kết nối bạn và tôi thành một, tạo nên thế giới vui vẻ',
+    visionPills: 'Đương sự,Gia đình,Bạn bè,Xã hội,Thế giới',
+    touchCardTitle: 'Biểu đạt ngôn ngữ ký hiệu ấm áp truyền tải trái tim bạn',
+    touchCardSub: 'Nhấn vào thẻ để kết nối ngay với trình mô phỏng theo dõi tay AI bên dưới!',
+    featuresLabel: 'ITDA Key Innovations',
+    featuresTitle: 'Giá trị giao tiếp cốt lõi của dịch vụ',
+    featuresSub: 'Trải nghiệm cơ chế phá bỏ rào cản hoàn toàn mới cho toàn nhân loại.',
+    stepsLabel: 'Simple 3-Steps',
+    stepsTitle: 'Hướng dẫn 3 bước đơn giản để vượt qua rào cản',
+    stepsSub: 'Bước đi trực quan nhất, không cần đào tạo',
+    step1Title: 'Truy cập ứng dụng / Mở web',
+    step1Desc: 'Chỉ cần truy cập URL trên trình duyệt hoặc tải ứng dụng ITDA để bắt đầu.',
+    step2Title: 'Chọn chế độ hội thoại',
+    step2Desc: 'Nhấn để kích hoạt chế độ phù hợp nhất: "Gửi ngôn ngữ ký hiệu" hoặc "Nhận dịch giọng nói".',
+    step3Title: 'Hướng camera và trò chuyện',
+    step3Desc: 'Căn chỉnh lòng bàn tay và cằm với góc camera để giao tiếp phong phú và ấm áp qua cử chỉ và giọng nói.',
+    ctaTitle: 'Hãy cùng nhau phá bỏ rào cản giao tiếp',
+    ctaSub: 'Công nghệ mỗi ngày đều nỗ lực để mở ra một thế giới bao dung lẫn nhau bằng cách phá bỏ những bức tường.',
+    ctaBtn: 'Liên hệ hợp tác doanh nghiệp',
+    comingSoonTitle: 'Đang chuẩn bị',
+    comingSoonMsg: 'Chúng tôi đang chuẩn bị tính năng này. Sẽ sớm sẵn sàng phục vụ bạn. Xin cảm ơn.',
+    comingSoonClose: 'Đóng',
+    feat1Title: 'Cảm biến dịch ngôn ngữ ký hiệu thời gian thực',
+    feat1Desc: 'Mô hình AI phân tích nhanh video camera trên thiết bị, theo dõi và dịch chính xác các cử chỉ ngôn ngữ ký hiệu tinh tế theo thời gian thực.',
+    feat2Title: 'Giọng nói ➜ Chuyển đổi ký hiệu nhân vật',
+    feat2Desc: 'Giọng nói không chỉ được hỗ trợ bằng văn bản thời gian thực mà còn được hình ảnh hóa tức thì thành ngôn ngữ ký hiệu tinh tế qua mô hình avatar.',
+    feat3Title: 'Thư viện ngôn ngữ ký hiệu đa ngôn ngữ toàn cầu',
+    feat3Desc: 'Cung cấp kết quả nghiên cứu ngôn ngữ ký hiệu tiêu chuẩn Hàn Quốc cùng với ngôn ngữ ký hiệu quốc tế (IS) và các mô-đun ngôn ngữ ký hiệu theo quốc gia.',
+    feat4Title: 'Cộng đồng học tập và đối tác',
+    feat4Desc: 'Không gian chia sẻ nơi người dùng ngôn ngữ ký hiệu, học viên, phiên dịch tình nguyện và gia đình hỗ trợ cùng nhau xây dựng.',
+    feat5Title: 'Ứng dụng web đa thiết bị',
+    feat5Desc: 'Framework đáp ứng được tối ưu hóa hoàn hảo cho ứng dụng iOS, Android, máy tính bảng và trình duyệt web kiosk.',
+    feat6Title: 'Nguyên tắc bảo mật đầu cuối',
+    feat6Desc: 'Cuộc hội thoại âm thanh nhạy cảm và cảnh quay camera không bao giờ được ghi lại trên máy chủ và được mã hóa đầu cuối khi đóng phòng chat.',
+    feat1Badge: 'Tốc độ vượt trội',
+    feat2Badge: 'Rõ ràng trực quan',
+    feat3Badge: 'Đầu tiên thế giới',
+    feat4Badge: 'Sức mạnh cộng đồng',
+    feat5Badge: 'Tương thích cao',
+    feat6Badge: 'Bảo mật nghiêm ngặt',
+  },
+  id: {
+    navIntro: 'Tentang',
+    navFeatures: 'Fitur',
+    navSteps: 'Mulai',
+    heroBadge: 'Perpaduan teknologi dan wawasan hangat melampaui disabilitas',
+    heroLine1: 'Meski tanpa suara,',
+    heroLine2: 'kita tetap terhubung',
+    heroDesc: 'ITDA menghubungkan bahasa isyarat dan suara secara mulus melalui AI real-time, memungkinkan percakapan alami dan lancar antara penyandang tunarungu dan orang dengar tanpa jeda.',
+    btnStart: 'Coba Gratis',
+    btnLearn: 'Pelajari ITDA',
+    stat1Num: '360K+',
+    stat1Label: 'Mitra Tunarungu Domestik',
+    stat2Num: '466 Juta',
+    stat2Label: 'Pengguna Bahasa Isyarat Global',
+    stat3Num: 'Tanpa Jeda',
+    stat3Label: 'Respons Real-time di Perangkat',
+    storyBadge: 'Brand Core Vision',
+    storyTitle: 'Menjembatani hambatan bahasa dunia dengan kehangatan Korea',
+    storyDesc1: 'ITDA lebih dari sekadar aplikasi penerjemah digital. Dari penyandang tunarungu, keluarga dan teman yang penuh kasih, tenaga medis, hingga tetangga sehari-hari — di mana pun suara dibutuhkan, kami menghubungkan bahasa isyarat dan suara secara transparan.',
+    storyDesc2: 'Ide yang lahir dari semangat Jeong (情) Korea yang mendalam tumbuh menjadi visi teknologi besar yang mengatasi keterputusan bahasa di seluruh dunia, membangun masyarakat yang setara dan hangat di mana tak seorang pun tertinggal.',
+    visionText: 'Penyandang, Keluarga, Teman, Masyarakat, Dunia — lima\nhati membentuk satu lingkaran adalah visi ITDA.',
+    visionSlogan: 'Menghubungkan kamu dan aku menjadi satu, menciptakan dunia yang menyenangkan',
+    visionPills: 'Penyandang,Keluarga,Teman,Masyarakat,Dunia',
+    touchCardTitle: 'Ekspresi bahasa isyarat hangat yang menyampaikan hati Anda',
+    touchCardSub: 'Ketuk kartu stempel untuk langsung terhubung ke simulator pelacakan tangan AI di bawah!',
+    featuresLabel: 'ITDA Key Innovations',
+    featuresTitle: 'Nilai komunikasi inti yang disampaikan layanan kami',
+    featuresSub: 'Rasakan mekanisme penghapusan hambatan dimensi baru untuk seluruh umat manusia.',
+    stepsLabel: 'Simple 3-Steps',
+    stepsTitle: 'Panduan 3 langkah mudah untuk menaklukkan hambatan',
+    stepsSub: 'Langkah pertama paling intuitif, tanpa perlu pelatihan',
+    step1Title: 'Akses Aplikasi / Buka Web',
+    step1Desc: 'Cukup kunjungi URL di browser atau unduh aplikasi mobile ITDA untuk memulai.',
+    step2Title: 'Pilih Mode Percakapan',
+    step2Desc: 'Ketuk untuk mengaktifkan mode paling intuitif: "Kirim Bahasa Isyarat" atau "Terima Terjemahan Suara".',
+    step3Title: 'Arahkan Kamera & Mulai Chat',
+    step3Desc: 'Sejajarkan telapak tangan dan dagu dengan sudut kamera untuk komunikasi yang kaya dan hangat melalui gerakan dan suara.',
+    ctaTitle: 'Mari bersama-sama meruntuhkan hambatan komunikasi',
+    ctaSub: 'Teknologi berusaha setiap hari untuk membuka dunia yang saling merangkul dengan meruntuhkan tembok.',
+    ctaBtn: 'Hubungi untuk Integrasi Bisnis',
+    comingSoonTitle: 'Sedang Dipersiapkan',
+    comingSoonMsg: 'Kami sedang mempersiapkan fitur ini. Akan segera siap melayani Anda. Terima kasih.',
+    comingSoonClose: 'Tutup',
+    feat1Title: 'Sensor Terjemahan Bahasa Isyarat Real-time',
+    feat1Desc: 'Model AI menganalisis video kamera di perangkat dengan cepat, melacak dan menerjemahkan alur gerakan bahasa isyarat yang halus secara real-time.',
+    feat2Title: 'Suara ➜ Konversi Isyarat Karakter',
+    feat2Desc: 'Suara tidak hanya dilengkapi teks real-time tetapi juga langsung divisualisasikan sebagai bahasa isyarat halus melalui pemodelan avatar.',
+    feat3Title: 'Perpustakaan Bahasa Isyarat Global Multibahasa',
+    feat3Desc: 'Menyediakan hasil penelitian bahasa isyarat standar Korea serta modul Bahasa Isyarat Internasional (IS) dan bahasa isyarat negara-negara utama.',
+    feat4Title: 'Komunitas Belajar & Mitra',
+    feat4Desc: 'Ruang berbagi tempat pengguna bahasa isyarat, peserta pelatihan, penerjemah sukarelawan, dan keluarga pendukung bersama-sama membangun.',
+    feat5Title: 'Aplikasi Web Multi-perangkat',
+    feat5Desc: 'Framework responsif yang dioptimalkan sempurna untuk aplikasi iOS, Android, tablet, dan browser web kiosk toko.',
+    feat6Title: 'Prinsip Privasi End-to-End',
+    feat6Desc: 'Percakapan audio sensitif dan rekaman kamera tidak pernah dicatat di server dan dienkripsi end-to-end saat ruang chat ditutup.',
+    feat1Badge: 'Kecepatan Unggul',
+    feat2Badge: 'Kejelasan Visual',
+    feat3Badge: 'Pertama di Dunia',
+    feat4Badge: 'Kekuatan Komunitas',
+    feat5Badge: 'Kompatibilitas Tinggi',
+    feat6Badge: 'Keamanan Ketat',
+  },
+  hi: {
+    navIntro: 'परिचय',
+    navFeatures: 'विशेषताएं',
+    navSteps: 'शुरू करें',
+    heroBadge: 'विकलांगता से परे गर्मजोशी भरी अंतर्दृष्टि और प्रौद्योगिकी का संयोजन',
+    heroLine1: 'आवाज़ न हो तब भी,',
+    heroLine2: 'हम जुड़े रहते हैं',
+    heroDesc: 'ITDA रियल-टाइम AI के माध्यम से सांकेतिक भाषा और आवाज़ को सहज रूप से जोड़ता है, जिससे बधिर और सुनने वाले लोग बिना किसी देरी के स्वाभाविक बातचीत कर सकते हैं।',
+    btnStart: 'मुफ़्त में आज़माएं',
+    btnLearn: 'ITDA के बारे में जानें',
+    stat1Num: '3.6 लाख+',
+    stat1Label: 'घरेलू बधिर साझेदार',
+    stat2Num: '46.6 करोड़',
+    stat2Label: 'वैश्विक सांकेतिक भाषा उपयोगकर्ता',
+    stat3Num: 'शून्य विलंब',
+    stat3Label: 'रियल-टाइम डिवाइस प्रतिक्रिया',
+    storyBadge: 'Brand Core Vision',
+    storyTitle: 'कोरियाई गर्मजोशी के साथ दुनिया की भाषा बाधाओं को जोड़ना',
+    storyDesc1: 'ITDA सिर्फ एक डिजिटल अनुवाद ऐप नहीं है। बधिर व्यक्तियों से लेकर प्यार करने वाले परिवार और दोस्तों, चिकित्सा कर्मचारियों से लेकर रोज़मर्रा के पड़ोसियों तक — जहाँ भी आवाज़ की ज़रूरत है, हम सांकेतिक भाषा और आवाज़ को पारदर्शी रूप से जोड़ते हैं।',
+    storyDesc2: 'कोरियाई लोगों की गहरी गर्मजोशी "जियोंग" (情) से जन्मा विचार दुनिया भर में भाषाई विसंगति को दूर करने वाली एक महान तकनीकी दृष्टि में विकसित होता है, जहाँ कोई भी पीछे नहीं छूटता।',
+    visionText: 'स्वयं, परिवार, मित्र, समाज, विश्व — पाँच\nदिल एक वृत्त बनाते हैं, यही ITDA की दृष्टि है।',
+    visionSlogan: 'तुम और मैं एक होकर सबके लिए खुशहाल दुनिया',
+    visionPills: 'स्वयं,परिवार,मित्र,समाज,विश्व',
+    touchCardTitle: 'आपके दिल की बात पहुँचाने वाली गर्मजोशी भरी सांकेतिक भाषा अभिव्यक्तियाँ',
+    touchCardSub: 'स्टैम्प कार्ड पर टैप करें और नीचे AI हैंड-ट्रैकिंग सिम्युलेटर से तुरंत जुड़ें!',
+    featuresLabel: 'ITDA Key Innovations',
+    featuresTitle: 'हमारी सेवा द्वारा प्रदान किए जाने वाले मूल संचार मूल्य',
+    featuresSub: 'पूरी मानवता के लिए बाधा-मुक्ति के एक बिल्कुल नए आयाम का अनुभव करें।',
+    stepsLabel: 'Simple 3-Steps',
+    stepsTitle: 'बाधाओं को जीतने के 3 आसान कदम',
+    stepsSub: 'सबसे सहज पहला कदम, किसी प्रशिक्षण की ज़रूरत नहीं',
+    step1Title: 'ऐप एक्सेस / वेब खोलें',
+    step1Desc: 'बस ब्राउज़र URL पर जाएं या शुरू करने के लिए ITDA मोबाइल ऐप डाउनलोड करें।',
+    step2Title: 'बातचीत मोड चुनें',
+    step2Desc: 'अपने लिए सबसे सहज मोड सक्रिय करें: "सांकेतिक भाषा भेजें" या "ध्वनि अनुवाद प्राप्त करें"।',
+    step3Title: 'कैमरा लक्ष्य करें और बात करें',
+    step3Desc: 'हथेलियों और ठोड़ी को कैमरा एंगल से मिलाएं और इशारों और आवाज़ से समृद्ध संवाद करें।',
+    ctaTitle: 'आइए, मिलकर संवाद की बाधाएं तोड़ें',
+    ctaSub: 'दीवारें तोड़कर आपसी समावेश की दुनिया खोलने के लिए, प्रौद्योगिकी हर दिन एक कदम आगे बढ़ती है।',
+    ctaBtn: 'व्यावसायिक एकीकरण के लिए संपर्क करें',
+    comingSoonTitle: 'तैयारी जारी है',
+    comingSoonMsg: 'हम वर्तमान में इस सुविधा को तैयार कर रहे हैं। जल्द ही उपलब्ध होगी। धन्यवाद।',
+    comingSoonClose: 'बंद करें',
+    feat1Title: 'रियल-टाइम सांकेतिक भाषा अनुवाद सेंसर',
+    feat1Desc: 'AI मॉडल डिवाइस पर कैमरा वीडियो का तेज़ी से विश्लेषण करता है, सांकेतिक भाषा के सूक्ष्म इशारों को रियल-टाइम में सटीक रूप से ट्रैक और अनुवाद करता है।',
+    feat2Title: 'आवाज़ ➜ कैरेक्टर सांकेतिक रूपांतरण',
+    feat2Desc: 'बोली गई आवाज़ न केवल रियल-टाइम टेक्स्ट से सहायता प्राप्त होती है बल्कि अवतार मॉडलिंग के माध्यम से तुरंत सूक्ष्म सांकेतिक भाषा में विज़ुअलाइज़ होती है।',
+    feat3Title: 'बहुभाषी वैश्विक सांकेतिक भाषा पुस्तकालय',
+    feat3Desc: 'कोरियाई मानक सांकेतिक भाषा अनुसंधान के साथ-साथ अंतर्राष्ट्रीय सांकेतिक (IS) और प्रमुख देशों के सांकेतिक भाषा मॉड्यूल प्रदान करता है।',
+    feat4Title: 'शिक्षण एवं साझेदार समुदाय',
+    feat4Desc: 'सांकेतिक भाषा उपयोगकर्ता, प्रशिक्षु, स्वयंसेवी दुभाषिए और सहायक परिवार मिलकर साझा स्थान बनाते हैं।',
+    feat5Title: 'क्रॉस मल्टी-डिवाइस वेब ऐप',
+    feat5Desc: 'iOS, Android, टैबलेट और कियोस्क स्टोर वेब ब्राउज़र के लिए पूरी तरह अनुकूलित रिस्पॉन्सिव फ्रेमवर्क।',
+    feat6Title: 'एंड-टू-एंड गोपनीयता सिद्धांत',
+    feat6Desc: 'संवेदनशील ऑडियो वार्तालाप और कैमरा फुटेज कभी सर्वर पर रिकॉर्ड नहीं होते और चैट रूम बंद होने पर एंड-टू-एंड एन्क्रिप्ट होकर नष्ट हो जाते हैं।',
+    feat1Badge: 'बेजोड़ गति',
+    feat2Badge: 'दृश्य स्पष्टता',
+    feat3Badge: 'विश्व में पहली बार',
+    feat4Badge: 'समुदाय शक्ति',
+    feat5Badge: 'उच्च संगतता',
+    feat6Badge: 'सख्त सुरक्षा',
+  },
+};
+
 // --- Default Landing Page Configuration ---
 const DEFAULT_CONFIG = {
   // Brand Logo & Banner Assets
@@ -220,6 +670,13 @@ export default function App() {
   useEffect(() => {
     localStorage.setItem('itda_web_config', JSON.stringify(config));
   }, [config]);
+
+  // Language state
+  const [lang, setLang] = useState<Lang>('ko');
+  const t = i18n[lang];
+
+  // Coming soon modal state
+  const [showComingSoon, setShowComingSoon] = useState(false);
 
   // Editor states
   const [isEditorOpen, setIsEditorOpen] = useState(false);
@@ -1046,9 +1503,22 @@ print(f"...총 {len(translated_text)}자 음절의 음성 파형 보충 및 음�
 
           {/* Desktop Nav Items */}
           <nav className="hidden md:flex items-center gap-7 text-[14px] font-medium text-stone-600">
-            <a href="#intro" className="hover:text-[#E76F51] transition-colors font-semibold">서비스 소개</a>
-            <a href="#features" className="hover:text-[#E76F51] transition-colors font-semibold">핵심 기술</a>
-            <a href="#steps" className="hover:text-[#E76F51] transition-colors font-semibold">시작하기</a>
+            <a href="#intro" className="hover:text-[#E76F51] transition-colors font-semibold">{t.navIntro}</a>
+            <a href="#features" className="hover:text-[#E76F51] transition-colors font-semibold">{t.navFeatures}</a>
+            <button onClick={() => setShowComingSoon(true)} className="hover:text-[#E76F51] transition-colors font-semibold">{t.navSteps}</button>
+            {/* Language Selector */}
+            <div className="relative">
+              <select
+                value={lang}
+                onChange={(e) => setLang(e.target.value as Lang)}
+                className="appearance-none bg-orange-50 border border-orange-200 text-stone-700 text-xs font-bold rounded-lg px-3 py-1.5 pr-7 cursor-pointer focus:outline-none focus:ring-2 focus:ring-orange-300"
+              >
+                {(Object.keys(LANG_LABELS) as Lang[]).map((key) => (
+                  <option key={key} value={key}>{LANG_LABELS[key]}</option>
+                ))}
+              </select>
+              <Globe className="absolute right-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-orange-500 pointer-events-none" />
+            </div>
           </nav>
 
         </div>
@@ -1062,51 +1532,51 @@ print(f"...총 {len(translated_text)}자 음절의 음성 파형 보충 및 음�
           <div className="lg:col-span-7 flex flex-col items-start text-left space-y-6">
             <div className="inline-flex items-center gap-2 bg-orange-100/50 border border-orange-200/40 px-3.5 py-1.5 rounded-full text-orange-700 text-xs font-bold tracking-tight shadow-2xs">
               <Heart className="w-3.5 h-3.5 fill-orange-600 text-orange-600" />
-              <span>{config.heroBadge}</span>
+              <span>{t.heroBadge}</span>
             </div>
 
 
             <h1 className="text-4xl sm:text-5xl lg:text-5xl font-black tracking-tight text-stone-900 leading-[1.25]">
-              {config.heroTitleLine1} <br />
+              {t.heroLine1} <br />
               <span className="text-[#E76F51] bg-gradient-to-r from-orange-600 via-orange-500 to-amber-500 bg-clip-text text-transparent">
-                {config.heroTitleLine2}
+                {t.heroLine2}
               </span>
             </h1>
 
             <p className="text-stone-600 text-base sm:text-lg leading-relaxed max-w-xl font-normal">
-              {config.heroDescription}
+              {t.heroDesc}
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto pt-2">
-              <a
-                href="#demo"
+              <button
+                onClick={() => setShowComingSoon(true)}
                 className="bg-stone-900 hover:bg-stone-800 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg transition-all text-center flex items-center justify-center gap-2 group text-sm"
               >
-                <span>{config.heroBtnStart}</span>
+                <span>{t.btnStart}</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </a>
+              </button>
               <a
                 href="#intro"
                 className="bg-white hover:bg-orange-50/50 text-stone-800 border border-stone-200 py-3.5 px-6 rounded-xl font-bold transition-all text-center flex items-center justify-center gap-2 text-sm"
               >
                 <Play className="w-4 h-4 fill-current text-[#E76F51]" />
-                <span>{config.heroBtnLearn}</span>
+                <span>{t.btnLearn}</span>
               </a>
             </div>
 
             {/* Quick trust metrics */}
             <div className="pt-6 border-t border-orange-100/60 w-full grid grid-cols-3 gap-4">
               <div>
-                <p className="text-2xl font-extrabold text-stone-900">{config.stat1Num}</p>
-                <p className="text-[11px] text-stone-500 mt-1 font-medium leading-tight">{config.stat1Label}</p>
+                <p className="text-2xl font-extrabold text-stone-900">{t.stat1Num}</p>
+                <p className="text-[11px] text-stone-500 mt-1 font-medium leading-tight">{t.stat1Label}</p>
               </div>
               <div>
-                <p className="text-2xl font-extrabold text-stone-900">{config.stat2Num}</p>
-                <p className="text-[11px] text-stone-500 mt-1 font-medium leading-tight">{config.stat2Label}</p>
+                <p className="text-2xl font-extrabold text-stone-900">{t.stat2Num}</p>
+                <p className="text-[11px] text-stone-500 mt-1 font-medium leading-tight">{t.stat2Label}</p>
               </div>
               <div>
-                <p className="text-2xl font-extrabold text-[#E76F51]">{config.stat3Num}</p>
-                <p className="text-[11px] text-stone-500 mt-1 font-medium leading-tight">{config.stat3Label}</p>
+                <p className="text-2xl font-extrabold text-[#E76F51]">{t.stat3Num}</p>
+                <p className="text-[11px] text-stone-500 mt-1 font-medium leading-tight">{t.stat3Label}</p>
               </div>
             </div>
           </div>
@@ -1127,14 +1597,13 @@ print(f"...총 {len(translated_text)}자 음절의 음성 파형 보충 및 음�
               </div>
 
               {/* Vision Statement */}
-              <p className="text-sm text-stone-700 leading-relaxed font-medium mt-2 mb-5">
-                청각장애인 당사자, 가족, 친구, 사회, 세계 — 다섯<br />
-                마음이 하나의 원을 이루는 <span className="font-extrabold text-stone-900">ITDA</span>의 비전입니다.
+              <p className="text-sm text-stone-700 leading-relaxed font-medium mt-2 mb-5 whitespace-pre-line">
+                {t.visionText.split('ITDA')[0]}<span className="font-extrabold text-stone-900">ITDA</span>{t.visionText.split('ITDA')[1]}
               </p>
 
               {/* 5 Value Pills */}
               <div className="flex flex-wrap justify-center gap-2 mb-6">
-                {['당사자', '가족', '친구', '사회', '세계'].map((label) => (
+                {t.visionPills.split(',').map((label: string) => (
                   <span key={label} className="border border-sky-300 text-sky-700 text-xs font-semibold px-4 py-1.5 rounded-full">
                     {label}
                   </span>
@@ -1150,7 +1619,7 @@ print(f"...총 {len(translated_text)}자 음절의 음성 파형 보충 및 음�
                   fallbackIcon={<p className="text-2xl font-extrabold text-stone-800">ITDA</p>}
                 />
                 <p className="text-sm text-stone-500 font-medium">
-                  너와 나를 하나로 이어 모두가 즐거운 세상
+                  {t.visionSlogan}
                 </p>
               </div>
             </div>
@@ -1165,9 +1634,9 @@ print(f"...총 {len(translated_text)}자 음절의 음성 파형 보충 및 음�
           <div className="text-center max-w-lg mx-auto mb-8">
             <h2 className="text-xs font-extrabold text-orange-600 tracking-widest uppercase">Touch Card Interaction</h2>
             <p className="text-lg font-extrabold text-[#2E2520] mt-1">
-              마음을 전하는 따뜻한 {config.logoTitle} 수어 및 아이콘 표현들
+              {t.touchCardTitle}
             </p>
-            <p className="text-xs text-stone-550 mt-1">스탬프 카드를 누르면 아래 인공지능 핸드트래킹 모션 체임버 시뮬레이터로 즉각 연동됩니다!</p>
+            <p className="text-xs text-stone-550 mt-1">{t.touchCardSub}</p>
           </div>
 
           <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
@@ -1211,14 +1680,14 @@ print(f"...총 {len(translated_text)}자 음절의 음성 파형 보충 및 음�
 
           {/* Left Text Detail */}
           <div className="lg:col-span-6 space-y-6">
-            <h3 className="text-[#E76F51] text-xs font-bold tracking-widest uppercase">{config.storyBadge}</h3>
+            <h3 className="text-[#E76F51] text-xs font-bold tracking-widest uppercase">{t.storyBadge}</h3>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-stone-950 tracking-tight leading-snug">
-              {config.storyTitle}
+              {t.storyTitle}
             </h2>
 
             <div className="space-y-4 text-stone-600 text-sm sm:text-base leading-relaxed">
-              <p>{config.storyDesc1}</p>
-              <p>{config.storyDesc2}</p>
+              <p>{t.storyDesc1}</p>
+              <p>{t.storyDesc2}</p>
             </div>
 
             {/* Feature small icon horizontal layout */}
@@ -1303,10 +1772,10 @@ print(f"...총 {len(translated_text)}자 음절의 음성 파형 보충 및 음�
       {/* --- INTRINSIC VALUES: SIX CORE INNOVATIONS --- */}
       <section className="py-20 px-4 md:px-8 max-w-6xl mx-auto" id="features">
         <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
-          <span className="text-[#E76F51] text-xs font-bold tracking-widest uppercase">ITDA Key Innovations</span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-stone-950 tracking-tight">서비스가 전달하는 핵심 소통가치</h2>
+          <span className="text-[#E76F51] text-xs font-bold tracking-widest uppercase">{t.featuresLabel}</span>
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-stone-950 tracking-tight">{t.featuresTitle}</h2>
           <p className="text-stone-600 text-sm leading-relaxed">
-            전혀 새로운 차원의 전인류적 장벽 철폐 메커니즘을 경험해보세요.
+            {t.featuresSub}
           </p>
         </div>
 
@@ -1326,12 +1795,12 @@ print(f"...총 {len(translated_text)}자 음절의 음성 파형 보충 및 음�
                     {getIconComponent(feat.icon)}
                   </div>
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-white border border-stone-200 text-stone-500">
-                    {feat.badge}
+                    {(t as any)[`feat${i+1}Badge`] || feat.badge}
                   </span>
                 </div>
                 <div className="space-y-1.5">
-                  <h3 className="font-extrabold text-stone-900 text-base">{feat.title}</h3>
-                  <p className="text-xs text-stone-500 leading-relaxed font-normal">{feat.desc}</p>
+                  <h3 className="font-extrabold text-stone-900 text-base">{(t as any)[`feat${i+1}Title`] || feat.title}</h3>
+                  <p className="text-xs text-stone-500 leading-relaxed font-normal">{(t as any)[`feat${i+1}Desc`] || feat.desc}</p>
                 </div>
               </div>
             </motion.div>
@@ -1344,9 +1813,9 @@ print(f"...총 {len(translated_text)}자 음절의 음성 파형 보충 및 음�
       <section className="bg-stone-50 border-y border-orange-100/60 py-20 px-4 md:px-8 text-center" id="steps">
         <div className="max-w-6xl mx-auto">
           <div className="max-w-2xl mx-auto mb-16 space-y-3">
-            <span className="text-[#E76F51] text-xs font-bold tracking-widest uppercase">Simple 3-Steps</span>
-            <h2 className="text-3xl font-extrabold text-stone-950 tracking-tight">장벽을 정복하는 간편한 3단계 안내</h2>
-            <p className="text-stone-600 text-sm">교육 없이 직관적으로 시작하는 가장 정겨운 발걸음</p>
+            <span className="text-[#E76F51] text-xs font-bold tracking-widest uppercase">{t.stepsLabel}</span>
+            <h2 className="text-3xl font-extrabold text-stone-950 tracking-tight">{t.stepsTitle}</h2>
+            <p className="text-stone-600 text-sm">{t.stepsSub}</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
@@ -1356,9 +1825,9 @@ print(f"...총 {len(translated_text)}자 음절의 음성 파형 보충 및 음�
               <div className="w-16 h-16 rounded-full bg-[#E76F51] text-white flex items-center justify-center text-xl font-black shadow-md shadow-orange-500/20 select-none">
                 1
               </div>
-              <h3 className="font-extrabold text-stone-900 text-base sm:text-lg">{config.step1Title}</h3>
+              <h3 className="font-extrabold text-stone-900 text-base sm:text-lg">{t.step1Title}</h3>
               <p className="text-xs text-stone-500 leading-relaxed max-w-xs font-normal">
-                {config.step1Desc}
+                {t.step1Desc}
               </p>
             </div>
 
@@ -1367,9 +1836,9 @@ print(f"...총 {len(translated_text)}자 음절의 음성 파형 보충 및 음�
               <div className="w-16 h-16 rounded-full bg-stone-900 text-white flex items-center justify-center text-xl font-black shadow-md shadow-stone-800/20 select-none">
                 2
               </div>
-              <h3 className="font-extrabold text-stone-900 text-base sm:text-lg">{config.step2Title}</h3>
+              <h3 className="font-extrabold text-stone-900 text-base sm:text-lg">{t.step2Title}</h3>
               <p className="text-xs text-stone-500 leading-relaxed max-w-xs font-normal">
-                {config.step2Desc}
+                {t.step2Desc}
               </p>
             </div>
 
@@ -1378,9 +1847,9 @@ print(f"...총 {len(translated_text)}자 음절의 음성 파형 보충 및 음�
               <div className="w-16 h-16 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xl font-black shadow-md shadow-emerald-500/20 select-none">
                 3
               </div>
-              <h3 className="font-extrabold text-stone-900 text-base sm:text-lg">{config.step3Title}</h3>
+              <h3 className="font-extrabold text-stone-900 text-base sm:text-lg">{t.step3Title}</h3>
               <p className="text-xs text-stone-500 leading-relaxed max-w-xs font-normal">
-                {config.step3Desc}
+                {t.step3Desc}
               </p>
             </div>
 
@@ -1410,20 +1879,20 @@ print(f"...총 {len(translated_text)}자 음절의 음성 파형 보충 및 음�
           </div>
 
           <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight leading-tight">
-            지금 {config.logoTitle}로<br />서로의 마음 속 온도를 한층 늘려보세요!
+            {t.ctaTitle}
           </h2>
 
           <p className="text-stone-400 text-xs sm:text-sm leading-relaxed max-w-md mx-auto">
-            벽을 허물어 따뜻하게 상호 포용하는 세상을 열어 가기 위해, 기술은 오늘도 애쓰며 한 호흡으로 전진합니다.
+            {t.ctaSub}
           </p>
 
           <div className="flex flex-col sm:flex-row justify-center gap-3 pt-3">
-            <a
-              href="mailto:support@itda.app"
+            <button
+              onClick={() => setShowComingSoon(true)}
               className="bg-white/10 hover:bg-white/15 active:scale-95 text-white font-bold py-3.5 px-8 rounded-xl text-xs sm:text-sm border border-white/20 transition-all inline-flex items-center justify-center gap-1.5"
             >
-              <span>기관 비즈니스 연동 문의하기</span>
-            </a>
+              <span>{t.ctaBtn}</span>
+            </button>
           </div>
         </div>
       </section>
@@ -1461,6 +1930,40 @@ print(f"...총 {len(translated_text)}자 음절의 음성 파형 보충 및 음�
 
         </div>
       </footer>
+
+      {/* --- COMING SOON MODAL --- */}
+      <AnimatePresence>
+        {showComingSoon && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4"
+            onClick={() => setShowComingSoon(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ type: 'spring', duration: 0.4 }}
+              className="bg-white rounded-2xl shadow-2xl p-8 max-w-sm w-full text-center space-y-5"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="w-16 h-16 mx-auto rounded-full bg-orange-100 flex items-center justify-center">
+                <Settings className="w-8 h-8 text-[#E76F51] animate-spin" style={{ animationDuration: '3s' }} />
+              </div>
+              <h3 className="text-xl font-extrabold text-stone-900">{t.comingSoonTitle}</h3>
+              <p className="text-sm text-stone-600 leading-relaxed">{t.comingSoonMsg}</p>
+              <button
+                onClick={() => setShowComingSoon(false)}
+                className="bg-stone-900 hover:bg-stone-800 text-white font-bold py-3 px-8 rounded-xl text-sm transition-all"
+              >
+                {t.comingSoonClose}
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
     </div>
   );

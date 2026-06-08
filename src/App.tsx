@@ -985,12 +985,14 @@ print(f"...총 {len(translated_text)}자 음절의 음성 파형 보충 및 음�
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          onClick={() => setIsEditorOpen(!isEditorOpen)}
-          className="bg-stone-900 hover:bg-stone-800 text-white px-4 py-3.5 rounded-full shadow-2xl flex items-center gap-2 font-bold text-xs sm:text-sm tracking-tight border border-stone-800"
-          id="customizer-trigger-btn"
+          onClick={() => {
+            const el = document.getElementById('sign-cards');
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
+          }}
+          className="bg-[#E76F51] hover:bg-[#d4603f] text-white px-5 py-3.5 rounded-full shadow-2xl flex items-center gap-2 font-bold text-xs sm:text-sm tracking-tight border border-orange-400/30"
         >
-          {isEditorOpen ? <X className="w-4 h-4 text-orange-400" /> : <Settings className="w-4 h-4 text-orange-400 animate-spin-slow" />}
-          <span>{isEditorOpen ? "편집기 닫기" : "실시간 문구/이미지 편집기"}</span>
+          <Heart className="w-4 h-4 text-white fill-white" />
+          <span>따스한 수어표현을 체험하세요</span>
         </motion.button>
       </div>
 
@@ -1644,7 +1646,7 @@ print(f"...총 {len(translated_text)}자 음절의 음성 파형 보충 및 음�
       </section>
 
       {/* --- FOUR CORE MEANING TOUCH CARDS (DYNAMIC TO ACCOMMODATE MORE OR CHANGED PHRASES!) --- */}
-      <section className="bg-stone-50/50 border-y border-orange-100/40 py-12 px-4 md:px-8">
+      <section className="bg-stone-50/50 border-y border-orange-100/40 py-12 px-4 md:px-8" id="sign-cards">
         <div className="max-w-6xl mx-auto">
           <div className="text-center max-w-lg mx-auto mb-8">
             <p className="text-lg font-extrabold text-[#2E2520] mt-1">

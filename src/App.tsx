@@ -551,10 +551,15 @@ const SIGN_VIDEO_MAP: Record<string, string | string[]> = {
     ? 'https://nnbtsjwgqocaypwggiey.supabase.co/storage/v1/object/public/sign_videos/69eeada6eb6445e9b9f88c0adf07d985.mp4'
     : 'https://nnbtsjwgqocaypwggiey.supabase.co/storage/v1/object/public/sign_videos/0ae9e93686834c8d803e56d7242888ae_transparent.webm',
   love: 'https://nnbtsjwgqocaypwggiey.supabase.co/storage/v1/object/public/sign_videos/3_transparent.webm',
-  together: [
-    'https://nnbtsjwgqocaypwggiey.supabase.co/storage/v1/object/public/sign_videos/b2e12b5ba647425b88b5319302036dea_transparent.webm',
-    'https://nnbtsjwgqocaypwggiey.supabase.co/storage/v1/object/public/sign_videos/7bab94c996cd453a8e672a4c9e21cbe4_transparent.webm',
-  ],
+  together: isMobile
+    ? [
+        'https://nnbtsjwgqocaypwggiey.supabase.co/storage/v1/object/public/sign_videos/17d9b52ce1f8455c9a840f7896a04a3a.mp4',
+        'https://nnbtsjwgqocaypwggiey.supabase.co/storage/v1/object/public/sign_videos/7bab94c996cd453a8e672a4c9e21cbe4.mp4',
+      ]
+    : [
+        'https://nnbtsjwgqocaypwggiey.supabase.co/storage/v1/object/public/sign_videos/b2e12b5ba647425b88b5319302036dea_transparent.webm',
+        'https://nnbtsjwgqocaypwggiey.supabase.co/storage/v1/object/public/sign_videos/7bab94c996cd453a8e672a4c9e21cbe4_transparent.webm',
+      ],
 };
 
 // --- Default Landing Page Configuration ---

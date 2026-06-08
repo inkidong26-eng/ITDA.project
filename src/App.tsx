@@ -539,6 +539,17 @@ const i18n: Record<Lang, Record<string, string>> = {
   },
 };
 
+// --- Sign Language Video URL Mapping (Supabase Storage) ---
+const SIGN_VIDEO_MAP: Record<string, string | string[]> = {
+  hello: 'https://nnbtsjwgqocaypwggiey.supabase.co/storage/v1/object/public/sign_videos/d4b9133f45744d28822a94b63501c613_transparent.webm',
+  thanks: 'https://nnbtsjwgqocaypwggiey.supabase.co/storage/v1/object/public/sign_videos/0ae9e93686834c8d803e56d7242888ae_transparent.webm',
+  love: 'https://nnbtsjwgqocaypwggiey.supabase.co/storage/v1/object/public/sign_videos/3_transparent.webm',
+  together: [
+    'https://nnbtsjwgqocaypwggiey.supabase.co/storage/v1/object/public/sign_videos/b2e12b5ba647425b88b5319302036dea_transparent.webm',
+    'https://nnbtsjwgqocaypwggiey.supabase.co/storage/v1/object/public/sign_videos/7bab94c996cd453a8e672a4c9e21cbe4_transparent.webm',
+  ],
+};
+
 // --- Default Landing Page Configuration ---
 const DEFAULT_CONFIG = {
   // Brand Logo & Banner Assets
@@ -574,8 +585,7 @@ const DEFAULT_CONFIG = {
     { id: 'hello', korean: '안녕하세요!', gestureDescription: '오른손 주먹을 쥐었다가 가슴 앞에서 가볍게 아래로 내리며 인사합니다.', icon: '👋', english: 'Hello', color: 'border-blue-200 bg-blue-50/20 text-blue-750' },
     { id: 'thanks', korean: '감사합니다.', gestureDescription: '왼손 손등을 오른손 바닥으로 가볍게 두 번 두드려 경의를 표현합니다.', icon: '🙏', english: 'Thank you', color: 'border-purple-200 bg-purple-50/20 text-purple-750' },
     { id: 'love', korean: '사랑합니다.', gestureDescription: '양손의 주먹을 살짝 쥔 상태에서 가슴 앞에 두고 동그랗게 교차해 굴려 줍니다.', icon: '🤟', english: 'I love you', color: 'border-orange-200 bg-orange-50/20 text-orange-750' },
-    { id: 'together', korean: '우리 함께해요.', gestureDescription: '양손의 집게손가락을 모아서 앞을 향해 뻗으며 하나되는 움직임을 생성합니다.', icon: '🤝', english: 'Together', color: 'border-amber-200 bg-amber-50/20 text-amber-750' },
-    { id: 'coffee', korean: '따뜻한 아메리카노 한 잔 부탁합니다.', gestureDescription: '마시는 시늉을 한 뒤 가슴을 부드럽게 세 방향으로 쓸어 소통합니다.', icon: '☕', english: 'Take a Cup', color: 'border-emerald-200 bg-emerald-50/20 text-emerald-750' },
+    { id: 'together', korean: '우리 같이', gestureDescription: '양손의 집게손가락을 모아서 앞을 향해 뻗으며 하나되는 움직임을 생성합니다.', icon: '🤝', english: 'Together', color: 'border-amber-200 bg-amber-50/20 text-amber-750' },
   ],
 
   // 6 Core Value Features
@@ -677,6 +687,11 @@ export default function App() {
 
   // Coming soon modal state
   const [showComingSoon, setShowComingSoon] = useState(false);
+
+  // Sign video modal state
+  const [videoModal, setVideoModal] = useState<{ urls: string[]; title: string } | null>(null);
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+  const [videoLoopCount, setVideoLoopCount] = useState(0);
 
   // Editor states
   const [isEditorOpen, setIsEditorOpen] = useState(false);
@@ -1632,24 +1647,23 @@ print(f"...총 {len(translated_text)}자 음절의 음성 파형 보충 및 음�
       <section className="bg-stone-50/50 border-y border-orange-100/40 py-12 px-4 md:px-8">
         <div className="max-w-6xl mx-auto">
           <div className="text-center max-w-lg mx-auto mb-8">
-            <h2 className="text-xs font-extrabold text-orange-600 tracking-widest uppercase">Touch Card Interaction</h2>
             <p className="text-lg font-extrabold text-[#2E2520] mt-1">
-              {t.touchCardTitle}
+              따스한 수어표현을 배워보세요?
             </p>
-            <p className="text-xs text-stone-550 mt-1">{t.touchCardSub}</p>
           </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
-            {config.signPhrases.map((card: any, i: number) => (
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            {config.signPhrases.filter((card: any) => SIGN_VIDEO_MAP[card.id]).map((card: any, i: number) => (
               <motion.div
                 key={card.id || i}
                 whileHover={{ y: -6, scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => {
-                  runSimulation(card);
-                  const demoEl = document.getElementById('demo');
-                  if (demoEl) {
-                    demoEl.scrollIntoView({ behavior: 'smooth' });
+                  const videoEntry = SIGN_VIDEO_MAP[card.id];
+                  if (videoEntry) {
+                    const urls = Array.isArray(videoEntry) ? videoEntry : [videoEntry];
+                    setCurrentVideoIndex(0);
+                    setVideoModal({ urls, title: card.korean });
                   }
                 }}
                 className={`border rounded-2xl p-5 text-center cursor-pointer transition-all duration-300 relative overflow-hidden group select-none min-h-[175px] flex flex-col justify-between ${card.color || 'border-orange-200 bg-orange-50/20 text-orange-700'}`}
@@ -1659,14 +1673,9 @@ print(f"...총 {len(translated_text)}자 음절의 음성 파형 보충 및 음�
                   <h3 className="font-extrabold text-stone-900 text-sm sm:text-base leading-tight">{card.korean}</h3>
                   <p className="text-[10px] opacity-75 font-semibold tracking-wide uppercase mt-0.5">{card.english}</p>
                 </div>
-                <div>
-                  <p className="text-[11px] text-stone-500 leading-relaxed line-clamp-2 mt-2.5">
-                    {card.gestureDescription}
-                  </p>
-                  <div className="mt-3.5 inline-flex items-center justify-center gap-1 text-[10px] font-extrabold group-hover:underline text-stone-700">
-                    <span>수어 모션 체험하기</span>
-                    <ChevronRight className="w-3 h-3" />
-                  </div>
+                <div className="mt-3.5 inline-flex items-center justify-center gap-1.5 text-[10px] font-extrabold group-hover:underline text-[#E76F51]">
+                  <Play className="w-3 h-3" />
+                  <span>수어 모션 체험하기 &gt;</span>
                 </div>
               </motion.div>
             ))}
@@ -1930,6 +1939,85 @@ print(f"...총 {len(translated_text)}자 음절의 음성 파형 보충 및 음�
 
         </div>
       </footer>
+
+      {/* --- SIGN VIDEO MODAL --- */}
+      <AnimatePresence>
+        {videoModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm px-4"
+            onClick={() => setVideoModal(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ type: 'spring', duration: 0.4 }}
+              className="bg-white rounded-2xl shadow-2xl p-5 max-w-lg w-full text-center space-y-4"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-extrabold text-stone-900">"{videoModal.title}" 수어 영상</h3>
+                <button onClick={() => setVideoModal(null)} className="p-1 hover:bg-stone-100 rounded-lg transition-colors">
+                  <X className="w-5 h-5 text-stone-500" />
+                </button>
+              </div>
+              <div className="rounded-xl overflow-hidden bg-stone-100 aspect-video relative">
+                {videoModal.urls.length > 1 && (
+                  <span className="absolute top-2 left-2 bg-black/60 text-white text-[11px] font-bold px-2.5 py-1 rounded-md z-10">
+                    {videoModal.title.split(' ')[currentVideoIndex] || `영상 ${currentVideoIndex + 1}`} ({currentVideoIndex + 1}/{videoModal.urls.length})
+                  </span>
+                )}
+                <video
+                  key={currentVideoIndex}
+                  src={videoModal.urls[currentVideoIndex]}
+                  autoPlay
+                  playsInline
+                  controls
+                  className="w-full h-full object-contain"
+                  onLoadedMetadata={(e) => {
+                    if (currentVideoIndex > 0) {
+                      e.currentTarget.currentTime = 0.5;
+                    }
+                  }}
+                  onTimeUpdate={(e) => {
+                    const vid = e.currentTarget;
+                    if (vid.duration && vid.currentTime >= vid.duration - 0.4 && videoModal.urls.length > 1) {
+                      const next = currentVideoIndex < videoModal.urls.length - 1 ? currentVideoIndex + 1 : 0;
+                      setCurrentVideoIndex(next);
+                    }
+                  }}
+                  onEnded={() => {
+                    if (videoModal.urls.length === 1) {
+                      setCurrentVideoIndex(0);
+                    }
+                  }}
+                />
+                {/* Preload next video */}
+                {videoModal.urls.length > 1 && (
+                  <link rel="preload" as="video" href={videoModal.urls[(currentVideoIndex + 1) % videoModal.urls.length]} />
+                )}
+              </div>
+              {videoModal.urls.length > 1 && (
+                <div className="flex items-center justify-center gap-2">
+                  {videoModal.urls.map((_: string, i: number) => (
+                    <button
+                      key={i}
+                      onClick={() => setCurrentVideoIndex(i)}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${currentVideoIndex === i ? 'bg-[#E76F51] text-white' : 'bg-stone-100 text-stone-500 hover:bg-stone-200'}`}
+                    >
+                      {videoModal.title.split(' ')[i] || `영상 ${i + 1}`}
+                    </button>
+                  ))}
+                </div>
+              )}
+              <p className="text-xs text-stone-500">카드를 클릭하여 다른 수어 영상도 확인해 보세요.</p>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* --- COMING SOON MODAL --- */}
       <AnimatePresence>

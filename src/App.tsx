@@ -540,9 +540,16 @@ const i18n: Record<Lang, Record<string, string>> = {
 };
 
 // --- Sign Language Video URL Mapping (Supabase Storage) ---
+// Mobile uses mp4 (no transparency issues), desktop uses webm (transparent)
+const isMobile = typeof navigator !== 'undefined' && /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
 const SIGN_VIDEO_MAP: Record<string, string | string[]> = {
-  hello: 'https://nnbtsjwgqocaypwggiey.supabase.co/storage/v1/object/public/sign_videos/d4b9133f45744d28822a94b63501c613_transparent.webm',
-  thanks: 'https://nnbtsjwgqocaypwggiey.supabase.co/storage/v1/object/public/sign_videos/0ae9e93686834c8d803e56d7242888ae_transparent.webm',
+  hello: isMobile
+    ? 'https://nnbtsjwgqocaypwggiey.supabase.co/storage/v1/object/public/sign_videos/f417621b02834909a3dc6393d6a6f53d.mp4'
+    : 'https://nnbtsjwgqocaypwggiey.supabase.co/storage/v1/object/public/sign_videos/d4b9133f45744d28822a94b63501c613_transparent.webm',
+  thanks: isMobile
+    ? 'https://nnbtsjwgqocaypwggiey.supabase.co/storage/v1/object/public/sign_videos/69eeada6eb6445e9b9f88c0adf07d985.mp4'
+    : 'https://nnbtsjwgqocaypwggiey.supabase.co/storage/v1/object/public/sign_videos/0ae9e93686834c8d803e56d7242888ae_transparent.webm',
   love: 'https://nnbtsjwgqocaypwggiey.supabase.co/storage/v1/object/public/sign_videos/3_transparent.webm',
   together: [
     'https://nnbtsjwgqocaypwggiey.supabase.co/storage/v1/object/public/sign_videos/b2e12b5ba647425b88b5319302036dea_transparent.webm',
@@ -1966,7 +1973,7 @@ print(f"...총 {len(translated_text)}자 음절의 음성 파형 보충 및 음�
                   <X className="w-5 h-5 text-stone-500" />
                 </button>
               </div>
-              <div className="rounded-xl overflow-hidden bg-[#e8e0d8] aspect-video relative">
+              <div className="rounded-xl overflow-hidden bg-[#d9d0c7] aspect-video relative">
                 {videoModal.urls.length > 1 && (
                   <span className="absolute top-2 left-2 bg-black/40 text-white text-[11px] font-bold px-2.5 py-1 rounded-md z-10">
                     {videoModal.title.split(' ')[currentVideoIndex] || `영상 ${currentVideoIndex + 1}`} ({currentVideoIndex + 1}/{videoModal.urls.length})
